@@ -1,6 +1,6 @@
 # ecm - 汽车用品电商管理系统（后端）
 
-基于 Spring Boot 的电商管理系统后端服务，为前端 [shop-web](https://github.com/你的用户名/shop-web) 提供 RESTful API。
+基于 Spring Boot 的电商管理系统后端服务，为前端 [shop-web](https://github.com/user666-cmd/shop-web) 提供 RESTful API。
 
 ## 技术栈
 

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gra.ecm.dao.ProductMapper">
+    <select id="findAll" resultType="Product">
+        select id,
+               name,
+               description,
+               price,
+               stock,
+               category_name,
+               image,
+               status,
+               sales
+        from t_product
+    </select>
+    <select id="searchByKeyword" resultType="Product">
+        select id,
+               name,
+               description,
+               price,
+               stock,
+               category_name,
+               image,
+               status,
+               sales
+        from t_product
+        where name like concat('%', #{keyword}, '%')
+           or description like concat('%', #{keyword}, '%')
+    </select>
+    <select id="searchByCategory" resultType="Product">
+        select id,
+               name,
+               description,
+               price,
+               stock,
+               category_name,
+               image,
+               status,
+               sales
+        from t_product
+        where category_name = #{categoryName}
+    </select>
+    <select id="searchByKeywordAndCategory" resultType="Product">
+        select id,
+               name,
+               description,
+               price,
+               stock,
+               category_name,
+               image,
+               status,
+               sales
+        from t_product
+        where (name like concat('%', #{keyword}, '%')
+           or description like concat('%', #{keyword}, '%'))
+          and category_name = #{categoryName}
+    </select>
+    <insert id="insert" parameterType="Product" useGeneratedKeys="true" keyProperty="id">
+        insert into t_product (name, description, price, stock, category_name, image, status, sales)
+        values (#{name}, #{description}, #{price}, #{stock}, #{categoryName}, #{image}, #{status}, #{sales})
+    </insert>
+    <update id="updateById" parameterType="Product">
+        update t_product
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="stock != null">stock = #{stock},</if>
+            <if test="categoryName != null">category_name = #{categoryName},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="sales != null">sales = #{sales},</if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete from t_product where id = #{id}
+    </delete>
+    
+    <update id="updateStockAndSales">
+        update t_product
+        set stock = stock - #{quantity},
+            sales = sales + #{quantity},
+            status = CASE 
+                WHEN stock - #{quantity} &lt;= 0 THEN 0
+                ELSE status
+            END
+        where id = #{productId}
+        and stock &gt;= #{quantity}
+    </update>
+    
+    <update id="updateStockAndSalesReverse">
+        update t_product
+        set stock = stock + #{quantity},
+            sales = sales - #{quantity},
+            status = CASE 
+                WHEN stock + #{quantity} &gt; 0 THEN 1
+                ELSE status
+            END
+        where id = #{productId}
+    </update>
+</mapper>

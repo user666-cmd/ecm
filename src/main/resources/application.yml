@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: ecm
+
+  #配置数据源（数据库连接池）
+  datasource:
+    #驱动类名
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #连接字符串, 数据库类型-mysql, 连接端口-3306, 数据库名称: ecm
+    url: jdbc:mysql://localhost:3306/ecm?characterEncoding=utf8&autoReconnect=true&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: 123456
+
+#配置mybatis
+mybatis:
+  configuration:
+    #自动将下划线命名转为驼峰式命名
+    map-underscore-to-camel-case: true
+    #日志前缀
+    log-prefix: mybatis.
+    #日志实现
+    log-impl: org.apache.ibatis.logging.commons.JakartaCommonsLoggingImpl
+  #配置动态sql文件的位置
+  mapper-locations: classpath*:/mapper/**/*.xml
+  #配置别名(简称)包(src -> main -> java -> com.gra.ecm -> model)
+  type-aliases-package: com.gra.ecm.model
+  #举例子说明，比如在Mapper XML中，原来写resultType="com.gra.ecm.model.Product"，
+  #现在配置了type-aliases-package之后，就可以直接写resultType="Product"，
+  #因为MyBatis会自动找到com.gra.ecm.model包下的Product类作为别名。
+
+
+
+
+server:
+  #tomcat启动端口，可修改为其他
+  port: 8080
+
+#日志配置
+logging:
+  level:
+    mybatis: debug  #mybatis 匹配 第 20 行日志前缀名

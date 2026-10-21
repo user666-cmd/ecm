@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gra.ecm.dao.OrderMapper">
+    <resultMap id="OrderResultMap" type="com.gra.ecm.model.Order">
+        <id property="id" column="id"/>
+        <result property="orderNo" column="order_no"/>
+        <result property="userId" column="user_id"/>
+        <result property="addressId" column="address_id"/>
+        <result property="totalAmount" column="total_amount"/>
+        <result property="status" column="status"/>
+        <result property="remark" column="remark"/>
+        <result property="receiverName" column="receiver_name"/>
+        <result property="receiverPhone" column="receiver_phone"/>
+        <result property="fullAddress" column="full_address"/>
+    </resultMap>
+
+    <select id="findByUserId" resultMap="OrderResultMap">
+        SELECT o.*, 
+               a.receiver_name, 
+               a.receiver_phone, 
+               CONCAT(a.province, a.city, a.district, a.detailed_address) as full_address
+        FROM t_order o
+        LEFT JOIN t_address a ON o.address_id = a.id
+        WHERE o.user_id = #{userId}
+        ORDER BY o.id DESC
+    </select>
+
+    <select id="findById" resultMap="OrderResultMap">
+        SELECT o.*, 
+               a.receiver_name, 
+               a.receiver_phone, 
+               CONCAT(a.province, a.city, a.district, a.detailed_address) as full_address
+        FROM t_order o
+        LEFT JOIN t_address a ON o.address_id = a.id
+        WHERE o.id = #{id}
+    </select>
+
+    <select id="findByOrderNo" resultMap="OrderResultMap">
+        SELECT o.*, 
+               a.receiver_name, 
+               a.receiver_phone, 
+               CONCAT(a.province, a.city, a.district, a.detailed_address) as full_address
+        FROM t_order o
+        LEFT JOIN t_address a ON o.address_id = a.id
+        WHERE o.order_no = #{orderNo}
+    </select>
+
+    <insert id="insert" parameterType="com.gra.ecm.model.Order" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_order (order_no, user_id, address_id, total_amount, status, remark)
+        VALUES (#{orderNo}, #{userId}, #{addressId}, #{totalAmount}, #{status}, #{remark})
+    </insert>
+
+    <update id="update" parameterType="com.gra.ecm.model.Order">
+        UPDATE t_order
+        SET status = #{status},
+            remark = #{remark}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM t_order WHERE id = #{id}
+    </delete>
+
+    <update id="updateStatus">
+        UPDATE t_order SET status = #{status} WHERE id = #{id}
+    </update>
+</mapper>

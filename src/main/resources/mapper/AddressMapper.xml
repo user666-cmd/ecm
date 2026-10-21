@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gra.ecm.dao.AddressMapper">
+    <resultMap id="AddressResultMap" type="com.gra.ecm.model.Address">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="receiverName" column="receiver_name"/>
+        <result property="receiverPhone" column="receiver_phone"/>
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
+        <result property="district" column="district"/>
+        <result property="detailedAddress" column="detailed_address"/>
+        <result property="isDefault" column="is_default"/>
+    </resultMap>
+
+    <select id="findByUserId" resultMap="AddressResultMap">
+        select * from t_address where user_id = #{userId} order by is_default desc, id desc
+    </select>
+
+    <select id="findById" resultMap="AddressResultMap">
+        select * from t_address where id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.gra.ecm.model.Address" useGeneratedKeys="true" keyProperty="id">
+        insert into t_address (user_id, receiver_name, receiver_phone, province, city, district, detailed_address, is_default)
+        values (#{userId}, #{receiverName}, #{receiverPhone}, #{province}, #{city}, #{district}, #{detailedAddress}, #{isDefault})
+    </insert>
+
+    <update id="update" parameterType="com.gra.ecm.model.Address">
+        update t_address
+        set receiver_name = #{receiverName},
+            receiver_phone = #{receiverPhone},
+            province = #{province},
+            city = #{city},
+            district = #{district},
+            detailed_address = #{detailedAddress},
+            is_default = #{isDefault}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from t_address where id = #{id}
+    </delete>
+
+    <update id="updateDefaultStatus">
+        update t_address set is_default = #{isDefault} where user_id = #{userId}
+    </update>
+
+    <update id="setDefaultAddress">
+        update t_address 
+        set is_default = CASE 
+            WHEN id = #{addressId} THEN 1 
+            ELSE 0 
+        END 
+        where user_id = #{userId}
+    </update>
+</mapper>

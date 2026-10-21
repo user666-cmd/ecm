@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gra.ecm.dao.UserMapper">
+    <select id="findByUsername" resultType="User">
+        select id,
+               username,
+               password,
+               phone,
+               email
+        from t_user
+        where username = #{username}
+    </select>
+    <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user (username, password, phone, email)
+        values (#{username}, #{password}, #{phone}, #{email})
+    </insert>
+    <select id="findAll" resultType="User">
+        select id,
+               username,
+               password,
+               phone,
+               email
+        from t_user
+    </select>
+    <update id="updateById" parameterType="User">
+        update t_user
+        <set>
+            <if test="username != null">username = #{username},</if>
+            <if test="password != null and password != ''">password = #{password},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="email != null">email = #{email},</if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete from t_user where id = #{id}
+    </delete>
+</mapper>

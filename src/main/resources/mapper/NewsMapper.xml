@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gra.ecm.dao.NewsMapper">
+    <select id="findAll" resultType="News">
+        select id,
+               title,
+               content,
+               author,
+               create_time as createTime
+        from t_news
+        order by create_time desc
+    </select>
+    <insert id="insert" parameterType="News" useGeneratedKeys="true" keyProperty="id">
+        insert into t_news (title, content, author, create_time)
+        values (#{title}, #{content}, #{author}, #{createTime})
+    </insert>
+    <update id="updateById" parameterType="News">
+        update t_news
+        <set>
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="author != null">author = #{author},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete from t_news where id = #{id}
+    </delete>
+</mapper>

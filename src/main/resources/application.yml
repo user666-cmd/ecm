@@ -9,7 +9,8 @@ spring:
     #连接字符串, 数据库类型-mysql, 连接端口-3306, 数据库名称: ecm
     url: jdbc:mysql://localhost:3306/ecm?characterEncoding=utf8&autoReconnect=true&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root
-    password: 123456
+    # 本地开发时请改为你自己的 MySQL 密码，请勿提交真实密码到公开仓库
+    password: your_mysql_password
 
 #配置mybatis
 mybatis:

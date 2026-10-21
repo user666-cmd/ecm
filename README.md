@@ -54,7 +54,13 @@ src/main/resources/
 
 ### 步骤
 
-1. **创建数据库**：在 MySQL 中创建名为 `ecm` 的数据库，并导入建表脚本（见下方说明）。
+1. **创建数据库并导入表结构**：在 MySQL 中创建名为 `ecm` 的数据库，然后执行仓库中的 `sql/ecm.sql`（包含完整建表语句和初始数据）：
+
+   ```bash
+   mysql -u root -p ecm < sql/ecm.sql
+   ```
+
+   或在 Navicat 中右键 `ecm` 数据库 →「运行 SQL 文件」→ 选择 `sql/ecm.sql`。
 
 2. **修改数据库连接**：编辑 `src/main/resources/application.yml`，将账号密码改为你本地的：
 
@@ -80,9 +86,9 @@ src/main/resources/
 
    启动后服务监听 `http://localhost:8080`，接口统一前缀为 `/api/v1`。
 
-### 建表脚本
+### 数据库脚本
 
-> ⚠️ 本仓库暂未包含 SQL 建表脚本。表结构可根据 `src/main/resources/mapper/*.xml` 与 `src/main/java/com/gra/ecm/model/` 下的实体类反推，或从实际开发用的 Navicat / MySQL Workbench 中导出 `schema.sql` 后补充进 `sql/` 目录。
+建表脚本位于 `sql/ecm.sql`，包含全部表结构与初始数据。
 
 ## 接口约定
 
